@@ -9,10 +9,10 @@ APP.AntModule = (function(){
     _max = board.getSize();
     _board = board;
 
-    for ( var i = 0; i < 1; i++ ) {
+    for ( var i = 0; i < 10; i++ ) {
       addAnt({
-        x: Math.floor(Math.random() * 64),
-        y: Math.floor(Math.random() * 64),
+        x: 33,//Math.floor(Math.random() * 64),
+        y: 33,//Math.floor(Math.random() * 64),
         z: 33,
         color: "#e11",
         kind: "normal"
@@ -38,38 +38,45 @@ APP.AntModule = (function(){
       var dX = Math.round( Math.random() * 2 - 1 );
       var dY = Math.round( Math.random() * 2 - 1 );
       var dZ = Math.round( Math.random() * 2 - 1 );
-
-      if ( this.carry ) {
-        this.build( dX, dY, dZ );
-      } else {
-        dZ = Math.round( Math.random() * -1 );
-        this.dig( dX, dY, dZ );
+      var choose = Math.round(Math.random());
+      switch (choose) {
+        case 0:
+        this.crawl( this.x + dX, this.y + dY, this.z + dZ );
+          break;
+        default:
+        if ( this.carry ) {
+          this.build( this.x + dX, this.y + dY, this.z + dZ );
+        } else {
+          this.dig( this.x + dX, this.y + dY, this.z + dZ );
+        }
       }
     };
 
-    this.dig = function( dX, dY, dZ ) {
-      var result = _board.dig( this.x + dX, this.y + dY, this.z + dZ );
-      if ( result ) {
-        this.carry = result;
-      } else {
-        this.crawl( dX, dY, dZ );
+    this.dig = function( x, y, z ) {
+      if ( _board.isSelected( x, y, z ) ) {
+        var result = _board.dig( x, y, z );
+        if ( result ) {
+          this.carry = result;
+        } else {
+          this.crawl( x, y, z );
+        }
       }
     };
 
-    this.crawl = function( dX, dY, dZ ) {
-      if (_board.isCrawlable( this.x + dX, this.y + dY, this.z + dZ ) ) {
-        this.x += dX;
-        this.y += dY;
-        this.z += dZ;
+    this.crawl = function( x, y, z ) {
+      if (_board.isCrawlable( x, y, z ) ) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
       }
     };
 
-    this.build = function( dX, dY, dZ ) {
-      if ( _board.isBuildable( this.x + dX, this.y + dY, this.z + dZ ) ) {
-        _board.build( this.x + dX, this.y + dY, this.z + dZ, this.carry );
+    this.build = function( x, y, z ) {
+      if ( _board.isBuildable( x, y, z ) ) {
+        _board.build( x, y, z, this.carry );
         this.carry = null;
       } else {
-        this.crawl( dX, dY, dZ );
+        this.crawl( x, y, z );
       }
     };
   };

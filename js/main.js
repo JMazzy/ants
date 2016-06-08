@@ -2,6 +2,8 @@ var APP = APP || {};
 
 APP.Main = (function(view, antModule, board) {
   var SIZE = 64;
+  var selecting = false;
+  var deselecting = false;
 
   var init = function() {
     board.init(SIZE);
@@ -19,6 +21,28 @@ APP.Main = (function(view, antModule, board) {
           break;
         default:
 
+      }
+    });
+
+    var canvas = $("#canvas");
+
+    canvas.mousedown(function(e) {
+      selecting = true;
+    });
+
+    canvas.mouseup(function(e) {
+      selecting = false;
+    });
+
+    canvas.mousemove(function(e) {
+      var x = e.offsetX;
+      var y = e.offsetY;
+
+      var tileX = Math.floor(x/12);
+      var tileY = Math.floor(y/12);
+
+      if ( selecting ) {
+        board.select( tileX, tileY );
       }
     });
   };

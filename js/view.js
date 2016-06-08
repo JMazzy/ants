@@ -1,7 +1,7 @@
 var APP = APP || {};
 
 APP.View = (function() {
-  var TILE_SIZE = 10;
+  var TILE_SIZE = 12;
 
   var canvas, ctx;
 
@@ -24,9 +24,17 @@ APP.View = (function() {
     for ( var y = 0; y < tiles.length; y++ ) {
       for ( var x = 0; x < tiles[z][y].length; x++ ) {
         if ( tiles[z][y][x].material === "air" && tiles[z-1][y][x].material === "dirt" ) {
-          ctx.fillStyle = "#642";
+          if ( tiles[z-1][y][x].selected ) {
+            ctx.fillStyle = "#282";
+          } else {
+            ctx.fillStyle = "#642";
+          }
         } else if ( tiles[z][y][x].material === "dirt" ) {
-          ctx.fillStyle = "#111";
+          if ( tiles[z][y][x].selected ) {
+            ctx.fillStyle = "#151";
+          } else {
+            ctx.fillStyle = "#321";
+          }
         } else {
           ctx.fillStyle = "#eee";
         }

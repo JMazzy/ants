@@ -41,13 +41,13 @@ APP.Board = (function() {
   };
 
   var changeLevel = function( amount ) {
-    if ( _currentLevel + amount > 0 && _currentLevel + amount < _size ) {
+    if ( _currentLevel + amount >= 0 && _currentLevel + amount < _size ) {
       _currentLevel += amount;
     }
   };
 
   var isInBounds = function(x,y,z) {
-    return x >= 0 && y >= 0 && z >= 0 && x < _size && y < _size && z < _size
+    return x > 0 && y > 0 && z > 0 && x < _size && y < _size && z < _size
   };
 
   var isCrawlable = function(x,y,z) {
@@ -106,11 +106,31 @@ APP.Board = (function() {
   var _Tile = function(data) {
     this.material = data.material;
     this.revealed = false;
+    this.selected = false;
+
+    this.select = function() {
+      this.selected = true;
+    }
+
+    this.deselect = function() {
+      this.selected = false;
+    }
 
     this.reveal = function() {
       this.revealed = true;
     };
   };
+
+  var select = function(x,y) {
+    _grid[_currentLevel][y][x].select();
+  };
+
+  var isSelected = function(x,y,z) {
+    if ( isInBounds(x,y,z)) {
+      return _grid[z][y][x].selected;
+    }
+    return false;
+  }
 
   var update = function() {
 
@@ -125,7 +145,9 @@ APP.Board = (function() {
     getSize: getSize,
     isCrawlable: isCrawlable,
     isBuildable: isBuildable,
+    isSelected: isSelected,
     dig: dig,
     build: build,
+    select: select,
   }
 })();
