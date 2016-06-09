@@ -22,7 +22,7 @@ APP.Board = (function() {
             material = "dirt";
           }
 
-          _grid[z][y][x] = new _Tile({ material: material });
+          _grid[z][y][x] = new APP.Tile({ material: material });
         }
       }
     }
@@ -103,24 +103,6 @@ APP.Board = (function() {
     _grid[z][y][x].material = material;
   }
 
-  var _Tile = function(data) {
-    this.material = data.material;
-    this.revealed = false;
-    this.selected = false;
-
-    this.select = function() {
-      this.selected = true;
-    }
-
-    this.deselect = function() {
-      this.selected = false;
-    }
-
-    this.reveal = function() {
-      this.revealed = true;
-    };
-  };
-
   var select = function(x,y) {
     _grid[_currentLevel][y][x].select();
   };
@@ -133,7 +115,17 @@ APP.Board = (function() {
   }
 
   var update = function() {
+    for ( var z = 0; z < _size; z++ ) {
+      for ( var y = 0; y < _size; y++ ) {
+        for ( var x = 0; x < _size; x++ ) {
+          _grid[z][y][x].update();
+        }
+      }
+    }
+  };
 
+  var addScent = function( x, y, z ) {
+    return _grid[z][y][x].addScent(100);
   };
 
   return {
@@ -149,5 +141,6 @@ APP.Board = (function() {
     dig: dig,
     build: build,
     select: select,
+    addScent: addScent,
   }
 })();

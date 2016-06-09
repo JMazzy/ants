@@ -45,6 +45,14 @@ APP.Main = (function(view, antModule, board) {
         board.select( tileX, tileY );
       }
     });
+
+    canvas.bind('mousewheel', function(e){
+      if(e.originalEvent.wheelDelta /120 > 0) {
+        board.changeLevel(1);
+      } else {
+        board.changeLevel(-1);
+      }
+    });
   };
 
   var update = function() {
