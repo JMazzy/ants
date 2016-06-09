@@ -125,7 +125,7 @@ APP.Board = (function() {
   };
 
   var addScent = function( x, y, z ) {
-    return _grid[z][y][x].addScent(100);
+    return _grid[z][y][x].addScent(10);
   };
 
   return {

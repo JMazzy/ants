@@ -19,8 +19,10 @@ APP.Tile = function(data) {
   };
 
   this.addScent = function(amount) {
-    if ( this.scent < 100 ) {
+    if ( this.scent + amount > 100 ) {
       this.scent = 100;
+    } else {
+      this.scent += amount;
     }
   };
 
