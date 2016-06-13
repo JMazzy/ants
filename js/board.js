@@ -22,7 +22,7 @@ APP.Board = (function() {
             material = "dirt";
           }
 
-          _grid[z][y][x] = new APP.Tile({ material: material });
+          _grid[z][y][x] = new APP.Tile({ material: material, neighbors: getNeighbors(x,y,z) });
         }
       }
     }
@@ -34,6 +34,24 @@ APP.Board = (function() {
 
   var getTiles = function() {
     return _grid;
+  };
+
+  var getNeighbors = function(x,y,z) {
+    var neighbors = [];
+    for ( var dZ = -1; dZ <= 1; dZ++ ) {
+      for ( var dY = -1; dY <= 1; dY++ ) {
+        for ( var dX = -1; dX <= 1; dX++ ) {
+          if ( ( dX !== 0 || dY !== 0 || dZ !== 0 )
+          && isInBounds( x+dX, y+dY, z+dZ )) {
+            neighbors.push({
+              x: x + dX,
+              y: y + dY,
+              z: z + dZ,
+            });
+          }
+        }
+      }
+    }
   };
 
   var getCurrentLevel = function() {
@@ -142,5 +160,6 @@ APP.Board = (function() {
     build: build,
     select: select,
     addScent: addScent,
+    getNeighbors: getNeighbors,
   }
 })();

@@ -2,6 +2,7 @@ var APP = APP || {};
 
 APP.Tile = function(data) {
   this.material = data.material;
+  this.neighbors = data.neighbors;
   this.scent = 0;
   this.revealed = false;
   this.selected = false;
@@ -18,6 +19,14 @@ APP.Tile = function(data) {
     this.revealed = true;
   };
 
+  this.removeScent = function(amount) {
+    if ( this.scent - amount < 0 ) {
+      this.scent = 0;
+    } else {
+      this.scent -= amount;
+    }
+  };
+
   this.addScent = function(amount) {
     if ( this.scent + amount > 100 ) {
       this.scent = 100;
@@ -26,17 +35,11 @@ APP.Tile = function(data) {
     }
   };
 
-  this.decayScent = function() {
-    if ( this.scent > 0 ) {
-      this.scent -= 1;
-    }
-  };
-
   this.getScent = function() {
     return this.scent;
   };
 
   this.update = function() {
-    this.decayScent();
+    this.removeScent(1);
   };
 };
