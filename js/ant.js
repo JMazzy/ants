@@ -9,7 +9,7 @@ APP.Ant = function(board, data) {
   this.carry = null;
 
   this.update = function() {
-    board.addScent(this.x, this.y, this.z);
+    board.addScent(10, this.x, this.y, this.z);
     this.move();
   };
 
@@ -33,21 +33,6 @@ APP.Ant = function(board, data) {
   };
 
   this.move = function() {
-    // var dX = Math.round( Math.random() * 2 - 1 );
-    // var dY = Math.round( Math.random() * 2 - 1 );
-    // var dZ = Math.round( Math.random() * 2 - 1 );
-    // var choose = Math.round(Math.random());
-    // switch (choose) {
-    //   case 0:
-    //   this.crawl( this.x + dX, this.y + dY, this.z + dZ );
-    //     break;
-    //   default:
-    //   if ( this.carry ) {
-    //     this.build( this.x + dX, this.y + dY, this.z + dZ );
-    //   } else {
-    //     this.dig( this.x + dX, this.y + dY, this.z + dZ );
-    //   }
-    // }
     var neighbors = board.getNeighbors(this.x, this.y, this.z);
     var crawlable = [];
     var diggable = [];
@@ -68,19 +53,17 @@ APP.Ant = function(board, data) {
       }
     }
 
-    if ( this.carry === "dirt" ) {
-      if ( buildable.length > 0 ) {
-        var location = buildable[ Math.floor( Math.random() * buildable.length ) ]
-        this.build(location.x, location.y, location.z);
-      } else {
-        var location = crawlable[ Math.floor( Math.random() * crawlable.length )]
-        this.crawl(location.x, location.y, location.z)
-      }
-    } else if () {
+    var location;
+    if ( this.carry === "dirt" && buildable.length > 0 ) {
+      location = buildable[ Math.floor( Math.random() * buildable.length ) ];
+      this.build(location.x, location.y, location.z);
+    } else if ( !this.carry && diggable.length > 0 ) {
       // Diggable avail and not carrying anything
-
-    } else {
-      // Otherwise
+      location = diggable[ Math.floor( Math.random() * diggable.length ) ];
+      this.dig(location.x, location.y, location.z);
+    } else if ( crawlable.length > 0 ) {
+      location = crawlable[ Math.floor( Math.random() * crawlable.length )]
+      this.crawl(location.x, location.y, location.z)
     }
 
   };

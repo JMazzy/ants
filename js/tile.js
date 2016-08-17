@@ -9,11 +9,15 @@ APP.Tile = function(data) {
 
   this.select = function() {
     this.selected = true;
-  }
+  };
 
   this.deselect = function() {
     this.selected = false;
-  }
+  };
+
+  this.isSelected = function() {
+    return this.selected;
+  };
 
   this.reveal = function() {
     this.revealed = true;
@@ -38,6 +42,10 @@ APP.Tile = function(data) {
   this.getScent = function() {
     return this.scent;
   };
+
+  this.emptyScent = function() {
+    this.scent = 0;
+  }
 
   this.update = function() {
     this.removeScent(1);

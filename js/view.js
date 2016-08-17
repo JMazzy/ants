@@ -59,7 +59,7 @@ APP.View = (function() {
   var _renderScent = function( scent, center ) {
     ctx.beginPath();
     ctx.arc(center.x, center.y, (scent/100)*(TILE_SIZE/2), 0, 2 * Math.PI);
-    ctx.fillStyle = "#e1e";
+    ctx.fillStyle = "rgba(240, 16, 240, 0.5)";
     ctx.fill();
   };
 

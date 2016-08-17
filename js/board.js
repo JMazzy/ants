@@ -52,6 +52,7 @@ APP.Board = (function() {
         }
       }
     }
+    return neighbors;
   };
 
   var getCurrentLevel = function() {
@@ -88,7 +89,7 @@ APP.Board = (function() {
   };
 
   var isBuildable = function(x,y,z) {
-    if ( !isInBounds(x,y,z) || ( _grid[z-1] && _grid[z-1][y][x].material === "air") ) {
+    if ( isSelected(x,y,z) || !isInBounds(x,y,z) || ( _grid[z-1] && _grid[z-1][y][x].material === "air") ) {
       return false;
     }
 
@@ -119,6 +120,7 @@ APP.Board = (function() {
 
   var build = function(x,y,z,material) {
     _grid[z][y][x].material = material;
+    _grid[z][y][x].emptyScent();
   }
 
   var select = function(x,y) {
@@ -142,9 +144,19 @@ APP.Board = (function() {
     }
   };
 
-  var addScent = function( x, y, z ) {
-    return _grid[z][y][x].addScent(10);
+  var addScent = function( amount, x, y, z ) {
+    return _grid[z][y][x].addScent(amount);
   };
+
+  var spreadScent = function() {
+    for ( var z = 0; z < _size; z++ ) {
+      for ( var y = 0; y < _size; y++ ) {
+        for ( var x = 0; x < _size; x++ ) {
+
+        }
+      }
+    }
+  }
 
   return {
     init: init,

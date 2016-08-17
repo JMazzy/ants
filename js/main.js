@@ -5,6 +5,9 @@ APP.Main = (function(view, antModule, board) {
   var selecting = false;
   var deselecting = false;
 
+  var d = new Date();
+  var lastTime = d.getTime();
+
   var init = function() {
     board.init(SIZE);
     antModule.init(board);
@@ -56,8 +59,15 @@ APP.Main = (function(view, antModule, board) {
   };
 
   var update = function() {
-    antModule.update();
-    board.update();
+    d = new Date();
+    var currentTime = d.getTime();
+    var dT = currentTime - lastTime;
+
+    if ( dT > 1000 ) {
+      antModule.update();
+      board.update();
+      lastTime = currentTime;
+    }
 
     var canvasData = { level: board.getCurrentLevel(), tiles: board.getTiles(), ants: antModule.getAnts() };
 
@@ -75,5 +85,5 @@ $( document ).ready(function() {
 
   setInterval( function() {
     APP.Main.update();
-  }, 1000 / 24)
+  }, 40)
 });
